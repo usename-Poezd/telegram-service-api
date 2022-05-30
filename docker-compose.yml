@@ -1,0 +1,17 @@
+version: '3.9'
+
+services:
+  nginx:
+      image: nginx:mainline
+      ports:
+        - 80:80
+      volumes:
+        - .:/var/www
+        - ./docker/nginx/conf.d:/etc/nginx/conf.d
+  app:
+    build:
+      context: .
+    working_dir: /var/www/
+    volumes:
+      - .:/var/www
+  
