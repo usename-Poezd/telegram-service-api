@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use danog\MadelineProto\API;
-use danog\MadelineProto\RPCErrorException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 
 class AuthController extends Controller
 {
@@ -80,9 +80,8 @@ class AuthController extends Controller
 
         $ok = $this->telegram_api->logout();
         if ($ok) {
-            foreach (glob(config('telegram.session') . '.' .  $this->getUidFromSession($this->telegram_api->session->getSessionPath()) . '*') as $filename) {
-               unlink($filename);
-            }
+            $uuid = $this->getUidFromSession($this->telegram_api->session->getSessionPath());
+            File::deleteDirectory(storage_path("app/telegram/$uuid"));
         }
 
 
